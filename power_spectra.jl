@@ -57,10 +57,11 @@ plot!(wr, abs2.(Fr),xlim=(0,100)) # Logscale with yaxis=:log
 
 #------------------------------------------------
 # Multitaper PSD
+# See also the examples in the package documentation (they are in pathto(Multitaper) folder)
 #------------------------------------------------
 using Multitaper
 
-# same signal with noise, changed the sampling rate
+# Same signal with noise, changed the sampling rate
 N = 2^10 - 1 ;
 dt = 1 / (2.1 * N) 
 t0 = 0 
