@@ -13,3 +13,8 @@ plot(p1,p2,p3,layout=l,size=(800,800))
 # Ticks
 plot(α[:,1],γ[:,1],xerr=α[:,2],yerr=γ[:,2], key=false,
  lt=:scatter,xlabel=l1,ylabel=l2,xticks=2e-16:4e-16:2e-15,yticks=5e-17:5e-17:2e-16)
+
+# Save figure, format inferred from filename
+savefig(pl,"../3_figures/figure3.pdf")
+
+
