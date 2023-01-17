@@ -90,3 +90,8 @@ plot(S.f,S.S)
 plot!(S.f,S.S.*exp.(-z*sqrt.(S.jkvar)),fillrange=S.S.*exp.(2*z*sqrt.(S.jkvar)),c=1,alpha=0.35)
 plot!(yaxis=:log)
 plot!(wr,abs2.(Fr)*dt/length(S.f),c=2,ylim=(1e-5,1))
+
+# In principle it is also possible to precompute the dappers, but it doesn't seem
+# to provide much benefit:
+@time dpss=dpss_tapers(length(chdat),NW,K);
+@time Z  = multispec(chdat, dt=dt, NW=NW, K=K,jk=true,Ftest=true, a_weight=true, dpVec=dpss);
