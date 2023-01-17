@@ -12,3 +12,13 @@ From this [documentation](https://github.com/JuliaEditorSupport/julia-vim/blob/m
 
 In `.vimrc` add a line `Plug 'JuliaEditorSupport/julia-vim'` and then run `:PlugInstall`.
 
+## Run from terminal
+
+You can use a julia script as an executable using, in the first line of your `example.jl`:
+
+```
+#!/usr/bin/env -S julia --threads 20
+
+<some julia code ...>
+```
+
