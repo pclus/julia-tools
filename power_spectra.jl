@@ -53,6 +53,13 @@ Fr = rfft(signal);
 wr = rfftfreq(length(t), 1.0/dt); 
 plot!(wr, abs2.(Fr),xlim=(0,100)) # Logscale with yaxis=:log
 
+# a fun exercise (useful to create surrogates):
+# Exercise: why the surrogate data has an additional slow frequency
+# that does not appear in the power spectra?
+Fs = @. abs(Fr)*exp(im*rand()*2*π)
+surrogate = irfft(Fs,length(signal))
+Fr2 = rfft(surrogate)
+plot(wr,[abs2.(Fr),abs2.(Fr2)],lw=[2 1])
 
 
 #------------------------------------------------
