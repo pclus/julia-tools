@@ -102,3 +102,27 @@ plot!(wr,abs2.(Fr)*dt/length(S.f),c=2,ylim=(1e-5,1))
 # to provide much benefit:
 @time dpss=dpss_tapers(length(chdat),NW,K);
 @time Z  = multispec(chdat, dt=dt, NW=NW, K=K,jk=true,Ftest=true, a_weight=true, dpVec=dpss);
+
+#------------------------------------------------
+# Using DSP
+#------------------------------------------------
+
+id = 250
+fl = "bipolar_pre"
+dt = 0.0004
+m = 9000000
+t, y = read_channel(id,fl ; t0=dt, tf=m*dt, m=m)
+
+n=2500*10
+s = welch_pgram(y, 2500*10, 2500*5; onesided=eltype(y)<:Real, nfft=nextfastfft(n), fs=1, window=hanning)
+
+plot(s.freq,s.power) 
+# From the docs:
+# "The computed periodogram is normalized so that the area under the periodogram is equal to the uncentered variance (or average power) of the original signal."
+
+# Can also perform multitaper power spectra, with a bit of improvement in performance (identical results apart from normalization)
+@time s = mt_pgram(y[1:2500*100]; fs=rate, nw=NW, ntapers=K);
+@time S = multispec(y[1:2500*100], dt=dt, NW=NW, K=K, jk=true, Ftest=true, a_weight=false);
+
+plot(S.f,S.S./sum(S.S))
+plot!(s.freq,s.power./sum(s.power))
