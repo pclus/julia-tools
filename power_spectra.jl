@@ -126,3 +126,7 @@ plot(s.freq,s.power)
 
 plot(S.f,S.S./sum(S.S))
 plot!(s.freq,s.power./sum(s.power))
+
+# Also time-frequency: 
+s = mt_spectrogram(y,2500*10,0;fs=rate,nw=NW,ntapers=K) #nonoverlabp
+s = mt_spectrogram(y,2500*10,0;fs=rate,nw=NW,ntapers=K) #overlabp
