@@ -22,3 +22,9 @@ You can use a julia script as an executable using, in the first line of your `ex
 <some julia code ...>
 ```
 
+## Empty environtments:
+
+```julia
+empty!(LOAD_PATH)
+push!(LOAD_PATH, "@")
+```
