@@ -63,3 +63,81 @@ function epslatex(name)
 end
 
 epslatex("prova")
+
+
+# Hidden arguments and tools fro GR heatmaps
+#
+using Plots.PlotMeasures
+Plots.gr_cbar_width[]=0.01
+Plots.gr_cbar_width[]=0.01
+Plots.gr_colorbar_tick_size[]=0.001
+Plots.gr_cbar_offsets[]=(0.005,0.02)
+hm= Any[]
+for subj in [8,10,11,12,13,15,16,18,20]
+    p = heatmap(0.1:0.1:200,dp,log10.(tfhm_mean_pre[subj]./sum(tfhm_mean_pre[subj])),
+    color=:rainbow1,xrange=(0.0,100.0),frame=:box,clim=(-6,-4.5), title="suj"*string(subj),
+    rightmargin=2mm,label="suj"*string(subj),colorbar=true)
+    # p = heatmap(0.1:0.1:200,dp,tfhm_mean_pre[subj],
+    # color=:rainbow1,xrange=(0.0,100.0),frame=:box,colorbar_scale=:log10,
+    # rightmargin=10mm)
+    plot!(ylabel="Depth [μm]",xlabel="Freq. [Hz]")
+    push!(hm,p)
+end
+
+plot(hm...,size=(1920,1080),bottommargin=10mm,leftmargin=10mm)
+
+subj=8
+p = heatmap(0.1:0.1:200,dp,tfhm_mean_pre[subj],
+    color=:rainbow1,xrange=(0.0,100.0),frame=:box,
+    rightmargin=10mm,colorbar_scale=:log10)
+plot!(ylabel="Depth [μm]",xlabel="Freq. [Hz]")
+
+# but sometimes it does not work. Also, there is supposed to be
+# an option colorbar_formatter=:scientific, but it is not working in GR
+#
+#
+# Gnuplot.options.verbose=false
+@gp "
+set term pngcairo enhanced size 200,300;" :-
+p1 = @gp :- "plot sin(x) lc 3" ;
+
+display(MIME("image/png"),p1)
+
+
+
+
+# Heatmaps
+using Plots.PlotMeasures
+using Measures
+Plots.gr_cbar_width[]=0.01
+Plots.gr_cbar_width[]=0.01
+Plots.gr_colorbar_tick_size[]=0.001
+Plots.gr_cbar_offsets[]=(0.005,0.02)
+hm= Any[]
+for subj in [8,9,10,11,12,13,15,16,18,20]
+    p = heatmap(0.1:0.1:200,dp,log10.(tfhm_mean_pre[subj]./sum(tfhm_mean_pre[subj])),
+    color=:rainbow1,xrange=(0.0,100.0),frame=:box,clim=(-6,-4.5), title="suj"*string(subj),
+    label="suj"*string(subj),colorbar=true)
+    # p = heatmap(0.1:0.1:200,dp,tfhm_mean_pre[subj],
+    # color=:rainbow1,xrange=(0.0,100.0),frame=:box,colorbar_scale=:log10,
+    # rightmargin=10mm)
+    plot!(ylabel="Depth [μm]",xlabel="Freq. [Hz]")
+    push!(hm,p)
+end
+
+# plot(hm...,size=(1920,1080),layout=(2,5),bottommargin=10mm)
+gr()
+plot(hm...,size=(400*7,600*2),layout=(2,5),
+bottommargin=15mm,topmargin=10mm,
+leftmargin=1mm,rightmargin=1mm,
+margin=0mm)
+
+
+# makie
+#
+f = Figure(resolution=(1350,500));
+Makie.scatter(f[1,1],rand(10))
+Makie.scatter(f[2,1],rand(10),color=:blue)
+Makie.scatter(f[1:2,2],rand(10),color=:red)
+Makie.scatter(f[1:2,3],rand(10),color=:green)
+f
